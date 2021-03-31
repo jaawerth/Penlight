@@ -9,8 +9,10 @@ iso = Date.Format 'yyyy-mm-dd' -- ISO date
 d = iso:parse '2010-04-10'
 asserteq(T(d:day(),d:month(),d:year()),T(10,4,2010))
 amer = Date.Format 'mm/dd/yyyy' -- American style
+amer2 = Date.Format():US_order(true) -- same, using parser method
 s = amer:tostring(d)
 dc = amer:parse(s)
+asserteq(dc, amer2:parse(s))
 asserteq(d,dc)
 
 d = Date() -- today
@@ -26,10 +28,15 @@ asserteq(tostring(d2:diff(d1)),"4 min 58 sec ")
 -------- testing 'flexible' date parsing ---------
 
 
-local df = Date.Format()
+local df, df_us = Date.Format(), Date.Format():US_order(true)
 
-function parse_date (s)
+function parse_date(s)
     return df:parse(s)
+end
+
+-- US order (swap month and day)
+function parse_us_order(s)
+    return df_us:parse(s)
 end
 
 -- ISO 8601
