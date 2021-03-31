@@ -499,6 +499,7 @@ end
 --- force US order in dates like 9/11/2001
 function Date.Format:US_order(yesno)
     self.us = yesno
+    return self
 end
 
 --local months = {jan=1,feb=2,mar=3,apr=4,may=5,jun=6,jul=7,aug=8,sep=9,oct=10,nov=11,dec=12}
@@ -661,8 +662,8 @@ function parse_date_unsafe (s,US)
     return res
 end
 
-function parse_date (s)
-    local ok, d = pcall(parse_date_unsafe,s)
+function parse_date (s, US)
+    local ok, d = pcall(parse_date_unsafe, s, US)
     if not ok then -- error
         d = d:gsub('.-:%d+: ','')
         return nil, d
